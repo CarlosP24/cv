@@ -1,0 +1,153 @@
+% $ biblatex auxiliary file $
+% $ biblatex bbl format version 3.2 $
+% Do not modify the above lines!
+%
+% This is an auxiliary file used by the 'biblatex' package.
+% This file may safely be deleted. It will be recreated by
+% biber as required.
+%
+\begingroup
+\makeatletter
+\@ifundefined{ver@biblatex.sty}
+  {\@latex@error
+     {Missing 'biblatex' package}
+     {The bibliography requires the 'biblatex' package.}
+      \aftergroup\endinput}
+  {}
+\endgroup
+
+
+\refsection{0}
+  \datalist[entry]{ydnt/global//global/global}
+    \entry{Paya23:arXiv}{misc}{}
+      \name{author}{7}{}{%
+        {{hash=3c4ac5611ddb8a214e67832a575205ef}{%
+           family={Payá},
+           familyi={P\bibinitperiod},
+           given={Carlos},
+           giveni={C\bibinitperiod}}}%
+        {{hash=baa19837705a2f7ca59363d2af154841}{%
+           family={Escribano},
+           familyi={E\bibinitperiod},
+           given={Samuel\bibnamedelima D.},
+           giveni={S\bibinitperiod\bibinitdelim D\bibinitperiod}}}%
+        {{hash=38b551d0b5ec5e2b4c915bd08649e102}{%
+           family={Vezzosi},
+           familyi={V\bibinitperiod},
+           given={Andrea},
+           giveni={A\bibinitperiod}}}%
+        {{hash=e43c014d35c1f82d5db97b59019dde72}{%
+           family={Peñaranda},
+           familyi={P\bibinitperiod},
+           given={Fernando},
+           giveni={F\bibinitperiod}}}%
+        {{hash=ec73f9877c5c0c154961d287f6596b4c}{%
+           family={Aguado},
+           familyi={A\bibinitperiod},
+           given={Ramón},
+           giveni={R\bibinitperiod}}}%
+        {{hash=b70b3bc73897ebe866dc3aed31ab63dc}{%
+           family={San-Jose},
+           familyi={S\bibinithyphendelim J\bibinitperiod},
+           given={Pablo},
+           giveni={P\bibinitperiod}}}%
+        {{hash=c1c05469cde5833a00edb132c01e24ef}{%
+           family={Prada},
+           familyi={P\bibinitperiod},
+           given={Elsa},
+           giveni={E\bibinitperiod}}}%
+      }
+      \strng{namehash}{6af8a97953a0760c35a19857b35e67e8}
+      \strng{fullhash}{e0a52889eb99f2ba50f51331a6e0d147}
+      \strng{bibnamehash}{e0a52889eb99f2ba50f51331a6e0d147}
+      \strng{authorbibnamehash}{e0a52889eb99f2ba50f51331a6e0d147}
+      \strng{authornamehash}{6af8a97953a0760c35a19857b35e67e8}
+      \strng{authorfullhash}{e0a52889eb99f2ba50f51331a6e0d147}
+      \field{sortinit}{2}
+      \field{sortinithash}{8b555b3791beccb63322c22f3320aa9a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{eprintclass}{cond-mat.mes-hall}
+      \field{eprinttype}{arXiv}
+      \field{month}{12}
+      \field{title}{Phenomenology of Majorana zero modes in full-shell hybrid nanowires}
+      \field{year}{2023}
+      \true{nocite}
+      \verb{eprint}
+      \verb 2312.11613
+      \endverb
+      \verb{urlraw}
+      \verb https://arxiv.org/abs/2312.11613
+      \endverb
+      \verb{url}
+      \verb https://arxiv.org/abs/2312.11613
+      \endverb
+      \keyw{preprint}
+      \annotation{item}{author}{default}{1}{}{0}{highlight}
+    \endentry
+    \entry{San-Jose23:PRB}{article}{}
+      \name{author}{5}{}{%
+        {{hash=b70b3bc73897ebe866dc3aed31ab63dc}{%
+           family={San-Jose},
+           familyi={S\bibinithyphendelim J\bibinitperiod},
+           given={Pablo},
+           giveni={P\bibinitperiod}}}%
+        {{hash=3c4ac5611ddb8a214e67832a575205ef}{%
+           family={Payá},
+           familyi={P\bibinitperiod},
+           given={Carlos},
+           giveni={C\bibinitperiod}}}%
+        {{hash=6453165734a86442afcc506fa9ba374f}{%
+           family={Marcus},
+           familyi={M\bibinitperiod},
+           given={C.\bibnamedelimi M.},
+           giveni={C\bibinitperiod\bibinitdelim M\bibinitperiod}}}%
+        {{hash=a1214c7a9f4f83ac59e8235613354c6e}{%
+           family={Vaitiekenas},
+           familyi={V\bibinitperiod},
+           given={S.},
+           giveni={S\bibinitperiod}}}%
+        {{hash=c1c05469cde5833a00edb132c01e24ef}{%
+           family={Prada},
+           familyi={P\bibinitperiod},
+           given={Elsa},
+           giveni={E\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {American Physical Society}%
+      }
+      \strng{namehash}{43c4b6634336e81d321af2b17717e318}
+      \strng{fullhash}{1c6b1c278bcb148bd28a0a19919a4322}
+      \strng{bibnamehash}{1c6b1c278bcb148bd28a0a19919a4322}
+      \strng{authorbibnamehash}{1c6b1c278bcb148bd28a0a19919a4322}
+      \strng{authornamehash}{43c4b6634336e81d321af2b17717e318}
+      \strng{authorfullhash}{1c6b1c278bcb148bd28a0a19919a4322}
+      \field{sortinit}{2}
+      \field{sortinithash}{8b555b3791beccb63322c22f3320aa9a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{issue}{15}
+      \field{journaltitle}{Phys. Rev. B}
+      \field{month}{4}
+      \field{title}{Theory of Caroli--de Gennes--Matricon analogs in full-shell hybrid nanowires}
+      \field{volume}{107}
+      \field{year}{2023}
+      \true{nocite}
+      \field{pages}{155423}
+      \range{pages}{1}
+      \verb{doi}
+      \verb 10.1103/PhysRevB.107.155423
+      \endverb
+      \verb{urlraw}
+      \verb https://link.aps.org/doi/10.1103/PhysRevB.107.155423
+      \endverb
+      \verb{url}
+      \verb https://link.aps.org/doi/10.1103/PhysRevB.107.155423
+      \endverb
+      \keyw{peer-reviewed}
+      \annotation{item}{author}{default}{2}{}{0}{highlight}
+    \endentry
+  \enddatalist
+\endrefsection
+\endinput
+

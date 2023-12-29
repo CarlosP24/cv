@@ -31,8 +31,7 @@
 \usepackage[T1]{fontenc} % Output font encoding for international characters
 
 \usepackage{fontspec} % Required for specification of custom fonts
-\setmainfont[Path = ./fonts/,
-Extension = .otf,
+\setmainfont[
 BoldFont = Erewhon-Bold,
 ItalicFont = Erewhon-Italic,
 BoldItalicFont = Erewhon-BoldItalic,
@@ -44,6 +43,10 @@ SmallCapsFeatures = {Letters = SmallCaps}
 
 \usepackage{sectsty} % Allows customization of titles
 \sectionfont{\color{slateblue}} % Color section titles
+
+\usepackage[backend=biber,
+           bibstyle=numeric,sorting=ydnt,sortcites=true,natbib=true,defernumbers=true,
+           maxbibnames=99,giveninits=true,uniquename=false]{biblatex} % Bibliography handling
 
 \fancypagestyle{plain}{\fancyhf{}\cfoot{\thepage\ of \pageref{LastPage}}} % Define a custom page style
 \pagestyle{plain} % Use the custom page style through the document
@@ -129,3 +132,36 @@ SmallCapsFeatures = {Letters = SmallCaps}
 #1
 \end{tabbing}
 }
+
+%----------------------------------------------------------------------------------------
+%	BIBLIOGRAPHY CONFIGURATION. Taken from https://www.hansenlab.org/cv_bibliography_tex
+%----------------------------------------------------------------------------------------
+
+\renewcommand*{\mkbibnamegiven}[1]{
+\ifitemannotation{highlight}
+{\textbf{#1}}
+{#1}}
+\renewcommand*{\mkbibnamefamily}[1]{
+\ifitemannotation{highlight}
+  {\textbf{#1}}
+  {#1}%
+\ifitemannotation{first}
+  {\textsuperscript{*}}
+  {}%
+\ifitemannotation{corresponding}
+  {$^\dagger$}
+  {}%
+}%%
+
+% Sort backwards
+\AtDataInput{%
+  \xifinlistcs{\thefield{entrykey}}{entrylist:\therefsection}{}{%
+    \listcsxadd{entrylist:\therefsection}{\thefield{entrykey}}%
+    \csnumgdef{entrycount:\therefsection}{%
+      \csuse{entrycount:\therefsection}+1}}}
+
+% Print the labelnumber as the total number of entries in the
+% current refsection, minus the actual labelnumber, plus one
+\DeclareFieldFormat{labelnumber}{\mkbibdesc{#1}}    
+\newrobustcmd*{\mkbibdesc}[1]{%
+  \number\numexpr\csuse{entrycount:\therefsection}+1-#1\relax}

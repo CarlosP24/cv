@@ -1,0 +1,21 @@
+[0] Config.pm:307> INFO - This is Biber 2.19
+[0] Config.pm:310> INFO - Logfile is 'cv_13.blg'
+[29] biber-darwin:340> INFO - === Fri Dec 29, 2023, 23:55:38
+[37] Biber.pm:419> INFO - Reading 'cv_13.bcf'
+[75] Biber.pm:976> INFO - Using all citekeys in bib section 0
+[81] Biber.pm:4419> INFO - Processing section 0
+[86] Biber.pm:4610> INFO - Looking for bibtex file '../Personal_web/markdown_generator/pubs.bib' for section 0
+[86] bibtex.pm:1713> INFO - LaTeX decoding ...
+[87] bibtex.pm:1519> INFO - Found BibTeX data source '../Personal_web/markdown_generator/pubs.bib'
+[101] Biber.pm:4610> INFO - Looking for bibtex file '../Personal_web/markdown_generator/preprints.bib' for section 0
+[101] bibtex.pm:1713> INFO - LaTeX decoding ...
+[102] bibtex.pm:1519> INFO - Found BibTeX data source '../Personal_web/markdown_generator/preprints.bib'
+[110] UCollate.pm:68> INFO - Overriding locale 'en-US' defaults 'variable = shifted' with 'variable = non-ignorable'
+[111] UCollate.pm:68> INFO - Overriding locale 'en-US' defaults 'normalization = NFD' with 'normalization = prenormalized'
+[111] Biber.pm:4239> INFO - Sorting list 'ydnt/global//global/global' of type 'entry' with template 'ydnt' and locale 'en-US'
+[111] Biber.pm:4245> INFO - No sort tailoring available for locale 'en-US'
+[115] bbl.pm:660> INFO - Writing 'cv_13.bbl' with encoding 'UTF-8'
+[116] bbl.pm:763> INFO - Output to cv_13.bbl
+[116] Biber.pm:131> WARN - legacy month field 'Apr' in entry 'San-Jose23:PRB' is not an integer - this will probably not sort properly.
+[116] Biber.pm:131> WARN - legacy month field 'Dec' in entry 'Paya23:arXiv' is not an integer - this will probably not sort properly.
+[116] Biber.pm:133> INFO - WARNINGS: 2
