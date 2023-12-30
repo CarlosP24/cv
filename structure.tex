@@ -326,3 +326,64 @@ SmallCapsFeatures = {Letters = SmallCaps}
     \printfield{pis}
     }
     }
+
+% Awards
+\DeclareFieldFormat
+  [award]
+  {worktitle}{\textit{#1\isdot}}
+\DeclareBibliographyDriver{award}{%
+    \usebibmacro{bibindex}%
+    \usebibmacro{begentry}%
+    \printfield{title}%
+    \newunit\newblock
+    \usebibmacro{institution+year}
+    \newunit\newblock
+    \usebibmacro{work_macro}
+    \newunit\newblock
+    \usebibmacro{period_macro}
+    \newunit\newblock
+    \usebibmacro{note_macro}
+    \newunit\newblock
+    \iftoggle{bbx:related}
+      {\usebibmacro{related:init}%
+       \usebibmacro{related}}
+      {}%
+    \usebibmacro{finentry}}
+  
+\newbibmacro*{institution+year}{
+    \printfield{institution}
+    \setunit*{\addcomma\space}
+    \printfield{year}
+    }
+
+\newbibmacro*{period_macro}{
+    \ifboolexpr{
+        test {\iffieldundef{period}}
+    }
+    {}
+    {
+    \printtext{Received during the period}
+    \printfield{period}
+    }
+    }
+
+\newbibmacro*{note_macro}{
+    \ifboolexpr{
+        test {\iffieldundef{note}}
+    }
+    {}
+    {
+    \printfield{note}
+    }
+    }
+
+\newbibmacro*{work_macro}{
+    \ifboolexpr{
+        test {\iffieldundef{worktitle}}
+    }
+    {}
+    {
+    \printtext{For the work entitled}
+    \printfield{worktitle}
+    }
+    }
