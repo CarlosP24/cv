@@ -1,21 +1,53 @@
 [0] Config.pm:307> INFO - This is Biber 2.19
 [0] Config.pm:310> INFO - Logfile is 'cv_13.blg'
-[29] biber-darwin:340> INFO - === Fri Dec 29, 2023, 23:55:38
-[37] Biber.pm:419> INFO - Reading 'cv_13.bcf'
-[75] Biber.pm:976> INFO - Using all citekeys in bib section 0
-[81] Biber.pm:4419> INFO - Processing section 0
-[86] Biber.pm:4610> INFO - Looking for bibtex file '../Personal_web/markdown_generator/pubs.bib' for section 0
-[86] bibtex.pm:1713> INFO - LaTeX decoding ...
-[87] bibtex.pm:1519> INFO - Found BibTeX data source '../Personal_web/markdown_generator/pubs.bib'
-[101] Biber.pm:4610> INFO - Looking for bibtex file '../Personal_web/markdown_generator/preprints.bib' for section 0
-[101] bibtex.pm:1713> INFO - LaTeX decoding ...
-[102] bibtex.pm:1519> INFO - Found BibTeX data source '../Personal_web/markdown_generator/preprints.bib'
-[110] UCollate.pm:68> INFO - Overriding locale 'en-US' defaults 'variable = shifted' with 'variable = non-ignorable'
-[111] UCollate.pm:68> INFO - Overriding locale 'en-US' defaults 'normalization = NFD' with 'normalization = prenormalized'
-[111] Biber.pm:4239> INFO - Sorting list 'ydnt/global//global/global' of type 'entry' with template 'ydnt' and locale 'en-US'
-[111] Biber.pm:4245> INFO - No sort tailoring available for locale 'en-US'
-[115] bbl.pm:660> INFO - Writing 'cv_13.bbl' with encoding 'UTF-8'
-[116] bbl.pm:763> INFO - Output to cv_13.bbl
-[116] Biber.pm:131> WARN - legacy month field 'Apr' in entry 'San-Jose23:PRB' is not an integer - this will probably not sort properly.
-[116] Biber.pm:131> WARN - legacy month field 'Dec' in entry 'Paya23:arXiv' is not an integer - this will probably not sort properly.
-[116] Biber.pm:133> INFO - WARNINGS: 2
+[33] biber-darwin:340> INFO - === Sat Dec 30, 2023, 18:59:07
+[39] Biber.pm:419> INFO - Reading 'cv_13.bcf'
+[82] Biber.pm:979> INFO - Found 0 citekeys in bib section 0
+[82] Biber.pm:976> INFO - Using all citekeys in bib section 1
+[82] Biber.pm:979> INFO - Found 0 citekeys in bib section 0
+[82] Biber.pm:976> INFO - Using all citekeys in bib section 2
+[82] Biber.pm:979> INFO - Found 0 citekeys in bib section 0
+[82] Biber.pm:976> INFO - Using all citekeys in bib section 3
+[82] Biber.pm:979> INFO - Found 0 citekeys in bib section 0
+[83] Biber.pm:976> INFO - Using all citekeys in bib section 4
+[83] Biber.pm:979> INFO - Found 0 citekeys in bib section 0
+[99] Biber.pm:4419> INFO - Processing section 1
+[104] Biber.pm:4610> INFO - Looking for bibtex file '../Personal_web/markdown_generator/pubs.bib' for section 1
+[104] bibtex.pm:1713> INFO - LaTeX decoding ...
+[106] bibtex.pm:1519> INFO - Found BibTeX data source '../Personal_web/markdown_generator/pubs.bib'
+[121] Biber.pm:4610> INFO - Looking for bibtex file '../Personal_web/markdown_generator/preprints.bib' for section 1
+[122] bibtex.pm:1713> INFO - LaTeX decoding ...
+[123] bibtex.pm:1519> INFO - Found BibTeX data source '../Personal_web/markdown_generator/preprints.bib'
+[132] UCollate.pm:68> INFO - Overriding locale 'en-US' defaults 'normalization = NFD' with 'normalization = prenormalized'
+[132] UCollate.pm:68> INFO - Overriding locale 'en-US' defaults 'variable = shifted' with 'variable = non-ignorable'
+[132] Biber.pm:4239> INFO - Sorting list 'ymdnt/global//global/global' of type 'entry' with template 'ymdnt' and locale 'en-US'
+[132] Biber.pm:4245> INFO - No sort tailoring available for locale 'en-US'
+[136] Biber.pm:4419> INFO - Processing section 2
+[136] Biber.pm:4610> INFO - Looking for bibtex file 'conferences.bib' for section 2
+[136] bibtex.pm:1713> INFO - LaTeX decoding ...
+[140] bibtex.pm:1519> INFO - Found BibTeX data source 'conferences.bib'
+[146] UCollate.pm:68> INFO - Overriding locale 'en-US' defaults 'variable = shifted' with 'variable = non-ignorable'
+[147] UCollate.pm:68> INFO - Overriding locale 'en-US' defaults 'normalization = NFD' with 'normalization = prenormalized'
+[147] Biber.pm:4239> INFO - Sorting list 'ymdnt/global//global/global' of type 'entry' with template 'ymdnt' and locale 'en-US'
+[147] Biber.pm:4245> INFO - No sort tailoring available for locale 'en-US'
+[148] Biber.pm:4419> INFO - Processing section 3
+[149] Biber.pm:4610> INFO - Looking for bibtex file 'outreach.bib' for section 3
+[149] bibtex.pm:1713> INFO - LaTeX decoding ...
+[151] bibtex.pm:1519> INFO - Found BibTeX data source 'outreach.bib'
+[156] UCollate.pm:68> INFO - Overriding locale 'en-US' defaults 'normalization = NFD' with 'normalization = prenormalized'
+[156] UCollate.pm:68> INFO - Overriding locale 'en-US' defaults 'variable = shifted' with 'variable = non-ignorable'
+[156] Biber.pm:4239> INFO - Sorting list 'ymdnt/global//global/global' of type 'entry' with template 'ymdnt' and locale 'en-US'
+[156] Biber.pm:4245> INFO - No sort tailoring available for locale 'en-US'
+[158] Biber.pm:4419> INFO - Processing section 4
+[158] Biber.pm:4610> INFO - Looking for bibtex file 'funding.bib' for section 4
+[158] bibtex.pm:1713> INFO - LaTeX decoding ...
+[159] bibtex.pm:1519> INFO - Found BibTeX data source 'funding.bib'
+[164] UCollate.pm:68> INFO - Overriding locale 'en-US' defaults 'variable = shifted' with 'variable = non-ignorable'
+[164] UCollate.pm:68> INFO - Overriding locale 'en-US' defaults 'normalization = NFD' with 'normalization = prenormalized'
+[164] Biber.pm:4239> INFO - Sorting list 'ymdnt/global//global/global' of type 'entry' with template 'ymdnt' and locale 'en-US'
+[164] Biber.pm:4245> INFO - No sort tailoring available for locale 'en-US'
+[165] bbl.pm:660> INFO - Writing 'cv_13.bbl' with encoding 'UTF-8'
+[167] bbl.pm:763> INFO - Output to cv_13.bbl
+[168] Biber.pm:131> WARN - legacy month field 'Apr' in entry 'San-Jose23:PRB' is not an integer - this will probably not sort properly.
+[168] Biber.pm:131> WARN - legacy month field 'Dec' in entry 'Paya23:arXiv' is not an integer - this will probably not sort properly.
+[168] Biber.pm:133> INFO - WARNINGS: 2

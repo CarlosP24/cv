@@ -51,6 +51,7 @@
     </requires>
     <requires type="static">
       <file>blx-dm.def</file>
+      <file>biblatex-dm.cfg</file>
       <file>blx-unicode.def</file>
       <file>blx-compat.def</file>
       <file>biblatex.def</file>
@@ -83,6 +84,9 @@
     <requires type="editable">
       <file>../Personal_web/markdown_generator/pubs.bib</file>
       <file>../Personal_web/markdown_generator/preprints.bib</file>
+      <file>conferences.bib</file>
+      <file>outreach.bib</file>
+      <file>funding.bib</file>
     </requires>
   </external>
 </requests>

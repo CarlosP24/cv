@@ -172,7 +172,7 @@
     </bcf:option>
     <bcf:option type="singlevalued">
       <bcf:key>sortingtemplatename</bcf:key>
-      <bcf:value>ydnt</bcf:value>
+      <bcf:value>ymdnt</bcf:value>
     </bcf:option>
     <bcf:option type="singlevalued">
       <bcf:key>sortsets</bcf:key>
@@ -1340,6 +1340,12 @@
       <bcf:field fieldtype="field" format="xsv" datatype="option" skip_output="true">relatedoptions</bcf:field>
       <bcf:field fieldtype="field" datatype="range">pages</bcf:field>
       <bcf:field fieldtype="field" datatype="code">execute</bcf:field>
+      <bcf:field fieldtype="field" datatype="verbatim" nullok="true">code</bcf:field>
+      <bcf:field fieldtype="field" datatype="verbatim" nullok="true">agency</bcf:field>
+      <bcf:field fieldtype="field" datatype="verbatim" nullok="true">period</bcf:field>
+      <bcf:field fieldtype="field" datatype="verbatim" nullok="true">institution</bcf:field>
+      <bcf:field fieldtype="field" datatype="verbatim" nullok="true">value</bcf:field>
+      <bcf:field fieldtype="field" datatype="verbatim" nullok="true">pis</bcf:field>
     </bcf:fields>
     <bcf:entryfields>
       <bcf:field>abstract</bcf:field>
@@ -2103,6 +2109,24 @@
       <bcf:field>type</bcf:field>
       <bcf:field>venue</bcf:field>
     </bcf:entryfields>
+    <bcf:entryfields>
+      <bcf:field>code</bcf:field>
+    </bcf:entryfields>
+    <bcf:entryfields>
+      <bcf:field>agency</bcf:field>
+    </bcf:entryfields>
+    <bcf:entryfields>
+      <bcf:field>period</bcf:field>
+    </bcf:entryfields>
+    <bcf:entryfields>
+      <bcf:field>institution</bcf:field>
+    </bcf:entryfields>
+    <bcf:entryfields>
+      <bcf:field>value</bcf:field>
+    </bcf:entryfields>
+    <bcf:entryfields>
+      <bcf:field>pis</bcf:field>
+    </bcf:entryfields>
     <bcf:multiscriptfields>
       <bcf:field>abstract</bcf:field>
       <bcf:field>addendum</bcf:field>
@@ -2360,12 +2384,55 @@
   <bcf:bibdata section="0">
     <bcf:datasource type="file" datatype="bibtex" glob="false">../Personal_web/markdown_generator/pubs.bib</bcf:datasource>
     <bcf:datasource type="file" datatype="bibtex" glob="false">../Personal_web/markdown_generator/preprints.bib</bcf:datasource>
+    <bcf:datasource type="file" datatype="bibtex" glob="false">conferences.bib</bcf:datasource>
+    <bcf:datasource type="file" datatype="bibtex" glob="false">outreach.bib</bcf:datasource>
+    <bcf:datasource type="file" datatype="bibtex" glob="false">funding.bib</bcf:datasource>
   </bcf:bibdata>
   <bcf:section number="0">
+  </bcf:section>
+  <!-- SECTION 1 -->
+  <bcf:bibdata section="1">
+    <bcf:datasource type="file" datatype="bibtex" glob="false">../Personal_web/markdown_generator/pubs.bib</bcf:datasource>
+    <bcf:datasource type="file" datatype="bibtex" glob="false">../Personal_web/markdown_generator/preprints.bib</bcf:datasource>
+  </bcf:bibdata>
+  <bcf:section number="1">
     <bcf:citekey order="1" intorder="1" nocite="1">*</bcf:citekey>
   </bcf:section>
+  <!-- SECTION 0 (cont.) -->
+  <bcf:section number="0">
+  </bcf:section>
+  <!-- SECTION 2 -->
+  <bcf:bibdata section="2">
+    <bcf:datasource type="file" datatype="bibtex" glob="false">conferences.bib</bcf:datasource>
+  </bcf:bibdata>
+  <bcf:section number="2">
+    <bcf:citekey order="1" intorder="1" nocite="1">*</bcf:citekey>
+  </bcf:section>
+  <!-- SECTION 0 (cont.) -->
+  <bcf:section number="0">
+  </bcf:section>
+  <!-- SECTION 3 -->
+  <bcf:bibdata section="3">
+    <bcf:datasource type="file" datatype="bibtex" glob="false">outreach.bib</bcf:datasource>
+  </bcf:bibdata>
+  <bcf:section number="3">
+    <bcf:citekey order="1" intorder="1" nocite="1">*</bcf:citekey>
+  </bcf:section>
+  <!-- SECTION 0 (cont.) -->
+  <bcf:section number="0">
+  </bcf:section>
+  <!-- SECTION 4 -->
+  <bcf:bibdata section="4">
+    <bcf:datasource type="file" datatype="bibtex" glob="false">funding.bib</bcf:datasource>
+  </bcf:bibdata>
+  <bcf:section number="4">
+    <bcf:citekey order="1" intorder="1" nocite="1">*</bcf:citekey>
+  </bcf:section>
+  <!-- SECTION 0 (cont.) -->
+  <bcf:section number="0">
+  </bcf:section>
   <!-- SORTING TEMPLATES -->
-  <bcf:sortingtemplate name="ydnt">
+  <bcf:sortingtemplate name="ymdnt">
     <bcf:sort order="1">
       <bcf:sortitem order="1">presort</bcf:sortitem>
     </bcf:sort>
@@ -2373,11 +2440,15 @@
       <bcf:sortitem order="1">sortkey</bcf:sortitem>
     </bcf:sort>
     <bcf:sort order="3" sort_direction="descending">
-      <bcf:sortitem order="1">sortyear</bcf:sortitem>
-      <bcf:sortitem order="2">year</bcf:sortitem>
+      <bcf:sortitem order="1" substring_side="left" substring_width="4">sortyear</bcf:sortitem>
+      <bcf:sortitem order="2" substring_side="left" substring_width="4">year</bcf:sortitem>
       <bcf:sortitem literal="1" order="3">9999</bcf:sortitem>
     </bcf:sort>
-    <bcf:sort order="4">
+    <bcf:sort order="4" sort_direction="descending">
+      <bcf:sortitem order="1">month</bcf:sortitem>
+      <bcf:sortitem literal="1" order="2">9999</bcf:sortitem>
+    </bcf:sort>
+    <bcf:sort order="5">
       <bcf:sortitem order="1">sortname</bcf:sortitem>
       <bcf:sortitem order="2">author</bcf:sortitem>
       <bcf:sortitem order="3">editor</bcf:sortitem>
@@ -2385,16 +2456,43 @@
       <bcf:sortitem order="5">sorttitle</bcf:sortitem>
       <bcf:sortitem order="6">title</bcf:sortitem>
     </bcf:sort>
-    <bcf:sort order="5">
+    <bcf:sort order="6">
       <bcf:sortitem order="1">sorttitle</bcf:sortitem>
       <bcf:sortitem order="2">title</bcf:sortitem>
     </bcf:sort>
   </bcf:sortingtemplate>
   <!-- DATALISTS -->
-  <bcf:datalist section="0"
-                name="ydnt/global//global/global"
+  <bcf:datalist section="1"
+                name="ymdnt/global//global/global"
                 type="entry"
-                sortingtemplatename="ydnt"
+                sortingtemplatename="ymdnt"
+                sortingnamekeytemplatename="global"
+                labelprefix=""
+                uniquenametemplatename="global"
+                labelalphanametemplatename="global">
+  </bcf:datalist>
+  <bcf:datalist section="2"
+                name="ymdnt/global//global/global"
+                type="entry"
+                sortingtemplatename="ymdnt"
+                sortingnamekeytemplatename="global"
+                labelprefix=""
+                uniquenametemplatename="global"
+                labelalphanametemplatename="global">
+  </bcf:datalist>
+  <bcf:datalist section="3"
+                name="ymdnt/global//global/global"
+                type="entry"
+                sortingtemplatename="ymdnt"
+                sortingnamekeytemplatename="global"
+                labelprefix=""
+                uniquenametemplatename="global"
+                labelalphanametemplatename="global">
+  </bcf:datalist>
+  <bcf:datalist section="4"
+                name="ymdnt/global//global/global"
+                type="entry"
+                sortingtemplatename="ymdnt"
                 sortingnamekeytemplatename="global"
                 labelprefix=""
                 uniquenametemplatename="global"

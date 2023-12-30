@@ -26,8 +26,12 @@
 
 \input{structure.tex} % Include the file specifying document layout
 
-\addbibresource{../Personal_web/markdown_generator/pubs.bib}
-\addbibresource{../Personal_web/markdown_generator/preprints.bib}
+\addbibresource[label=pubs]{../Personal_web/markdown_generator/pubs.bib}
+\addbibresource[label=preprints]{../Personal_web/markdown_generator/preprints.bib}
+\addbibresource[label=confs]{conferences.bib}
+\addbibresource[label=outreach]{outreach.bib}
+\addbibresource[label=funding]{funding.bib}
+
 
 %----------------------------------------------------------------------------------------
 
@@ -47,7 +51,7 @@
 {\bf Full Name} \> Carlos Payá Herrero\\ 
 {\bf Birthdate} \> 20$^{th}$ January 1999 \\ % Date of birth 
 {\bf Birthplace} \> Madrid, Spain \\ % Date of birth 
-{\bf Nationality} \> Spanish % Nationality
+{\bf Nationality} \> Spanish \\ % Nationality
 \end{tabbing}}
 \hfill % Horizontal space between the two blocks
 \parbox{0.5\textwidth}{ % Second block
@@ -58,6 +62,17 @@
 {\bf ORCID} \> \href{https://orcid.org/0000-0001-5709-2290}{0000-0001-5709-2290} \\ 
 {\bf Github} \> \href{https://github.com/CarlosP24}{Carlosp24} 
 \end{tabbing}}
+
+\vspace{-1cm}
+
+\parbox{0.5\textwidth}{ % First block
+\begin{tabbing}
+    \hspace{3cm} \= \hspace{4cm} \= \kill % Spacing within the block
+    {\bf Latest update} \> \today \\ % Update date
+\end{tabbing}
+}
+
+\vspace{-1cm}
 
 %----------------------------------------------------------------------------------------
 %	PERSONAL PROFILE
@@ -75,7 +90,7 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis elementum nec dolo
 
 \tabbedblock{
 \bf{2023-} \> \href{http://doctorate-nanobio-uam.es/}{PhD in Condensed Matter Physics} - \href{https://www.uam.es/uam/inicio}{Universidad Autónoma de Madrid}, Madrid, Spain\\
-\bf{ongoing}\\[5pt]
+\bf{Present}\\[5pt]
 \>\+
 \textit{Tentative completion date} \> February 2027 \\
 Topic \> \textit{Topological superconductors with hybrid materials:}\\
@@ -133,12 +148,59 @@ Bachelor's Thesis \> \textit{Josephson junctions based on full-shell Majorana na
 
 \section{Publications}
 
-\nocite{*}
-
 %\defbibnote{mynote}{$^*$ indicates equal contributions\\ $^\dagger$ indicates corresponding author(s) (if not the senior author)\\ \textbf{boldface} indicates a member of my lab \\}
-\printbibliography[heading=subbibliography,title=Preprints,keyword=preprint]
+\begin{refsection}[pubs,preprints]
+    \nocite{*}
+    \printbibliography[heading=subbibliography,title=Preprints,keyword=preprint]
 
-\printbibliography[heading=subbibliography,title=Journals,keyword=peer-reviewed]
+    \printbibliography[heading=subbibliography,title=Journals,keyword=peer-reviewed]
+\end{refsection}
+
+%----------------------------------------------------------------------------------------
+%	CONFERENCES
+%----------------------------------------------------------------------------------------
+
+\section{Conferences}
+
+\begin{refsection}[confs]
+    \nocite{*}
+    \printbibliography[heading=subbibliography,title=Poster contributions,keyword=Poster]
+
+    \printbibliography[heading=subbibliography,title=Attended,keyword=Attended]
+\end{refsection}
+
+%----------------------------------------------------------------------------------------
+%	CONFERENCES
+%----------------------------------------------------------------------------------------
+
+\section{Outreach}
+
+\job
+{March 2023 -}{Present}
+{ICMM Superconductivity Outreach Team}
+{https://wp.icmm.csic.es/superconductividad/}
+{Lecturer and workshopper}
+{Regular activities: monthly talks and demonstrations for high-school students.}
+
+\begin{refsection}[outreach]
+    \nocite{*}
+    \printbibliography[heading=subbibliography,title=Events]
+\end{refsection}
+
+%----------------------------------------------------------------------------------------
+%	FUNDING
+%----------------------------------------------------------------------------------------
+
+
+\section{Funding}
+
+\begin{refsection}[funding]
+    \nocite{*}
+    \printbibliography[heading=subbibliography,title=Student grants,keyword=student]
+
+    \printbibliography[heading=subbibliography,title=Participation in funded projects,keyword=participation]
+
+\end{refsection}
 
 
 \clearpage

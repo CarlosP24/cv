@@ -45,8 +45,14 @@ SmallCapsFeatures = {Letters = SmallCaps}
 \sectionfont{\color{slateblue}} % Color section titles
 
 \usepackage[backend=biber,
-           bibstyle=numeric,sorting=ydnt,sortcites=true,natbib=true,defernumbers=true,
-           maxbibnames=99,giveninits=true,uniquename=false]{biblatex} % Bibliography handling
+           bibstyle=numeric,
+           sorting=ymdnt,
+           sortcites=true,
+           natbib=true,
+           defernumbers=true,
+           maxbibnames=99,
+           giveninits=true,
+           uniquename=false]{biblatex} % Bibliography handling
 
 \fancypagestyle{plain}{\fancyhf{}\cfoot{\thepage\ of \pageref{LastPage}}} % Define a custom page style
 \pagestyle{plain} % Use the custom page style through the document
@@ -153,15 +159,159 @@ SmallCapsFeatures = {Letters = SmallCaps}
   {}%
 }%%
 
-% Sort backwards
-\AtDataInput{%
-  \xifinlistcs{\thefield{entrykey}}{entrylist:\therefsection}{}{%
-    \listcsxadd{entrylist:\therefsection}{\thefield{entrykey}}%
-    \csnumgdef{entrycount:\therefsection}{%
-      \csuse{entrycount:\therefsection}+1}}}
+% % Sort backwards
+% \AtDataInput{%
+%   \xifinlistcs{\thefield{entrykey}}{entrylist:\therefsection}{}{%
+%     \listcsxadd{entrylist:\therefsection}{\thefield{entrykey}}%
+%     \csnumgdef{entrycount:\therefsection}{%
+%       \csuse{entrycount:\therefsection}+1}}}
 
+      % Count total number of entries in each refsection
+\AtDataInput{%
+  \csnumgdef{entrycount:\therefsection}{%
+    \csuse{entrycount:\therefsection}+1}}
 % Print the labelnumber as the total number of entries in the
 % current refsection, minus the actual labelnumber, plus one
 \DeclareFieldFormat{labelnumber}{\mkbibdesc{#1}}    
 \newrobustcmd*{\mkbibdesc}[1]{%
   \number\numexpr\csuse{entrycount:\therefsection}+1-#1\relax}
+
+
+% Sort by year, month, day, title
+\DeclareSortingScheme{ymdnt}{
+  \sort{
+    \field{presort}
+  }
+  \sort[final]{
+    \field{sortkey}
+  }
+  \sort[direction=descending]{
+    \field[strside=left,strwidth=4]{sortyear}
+    \field[strside=left,strwidth=4]{year}
+    \literal{9999}
+  }
+  \sort[direction=descending]{
+    \field{month}
+    \literal{9999}
+  }
+  \sort{
+    \field{sortname}
+    \field{author}
+    \field{editor}
+    \field{translator}
+    \field{sorttitle}
+    \field{title}
+  }
+  \sort{
+    \field{sorttitle}
+    \field{title}
+  }
+}
+
+% Citation formats custom (https://tex.stackexchange.com/questions/12806/guidelines-for-customizing-biblatex-styles)
+\DeclareFieldFormat
+  [article]
+  {title}{\textit{#1\isdot}}
+
+\DeclareFieldFormat
+  [unpublished]
+  {note}{\textit{#1\isdot}}
+
+\DeclareFieldFormat
+  [unpublished]
+  {date}{\textbf{#1\isdot}}
+
+
+  \DeclareBibliographyDriver{unpublished}{%
+  \usebibmacro{bibindex}%
+  \usebibmacro{begentry}%
+  \newunit\newblock
+  \usebibmacro{location+date}%
+  \usebibmacro{author}%
+  \setunit{\printdelim{nametitledelim}}\newblock
+  \usebibmacro{title}%
+  \newunit
+  \printlist{language}%
+  \newunit\newblock
+  \usebibmacro{byauthor}%
+  \newunit\newblock
+  \printfield{howpublished}%
+  \newunit\newblock
+  \usebibmacro{event+venue+date}%
+  \newunit\newblock
+  \printfield{type}%
+  \newunit\newblock
+  \printfield{note}%
+  \newunit\newblock
+  \usebibmacro{doi+eprint+url}%
+  \newunit\newblock
+  \usebibmacro{addendum+pubstate}%
+  \setunit{\bibpagerefpunct}\newblock
+  \usebibmacro{pageref}%
+  \newunit\newblock
+  \iftoggle{bbx:related}
+    {\usebibmacro{related:init}%
+     \usebibmacro{related}}
+    {}%
+  \usebibmacro{finentry}}
+
+
+
+
+  % Funding
+
+
+  \DeclareBibliographyDriver{funding}{%
+  \usebibmacro{bibindex}%
+  \usebibmacro{begentry}%
+  \usebibmacro{title+institution}%
+  \usebibmacro{agency+code+period}
+  \newunit\newblock
+  \usebibmacro{value_macro}
+  \newunit\newblock
+  \usebibmacro{pi_macro}
+  \newunit\newblock
+  \iftoggle{bbx:related}
+    {\usebibmacro{related:init}%
+     \usebibmacro{related}}
+    {}%
+  \usebibmacro{finentry}}
+
+  \newbibmacro*{title+institution}{
+    \printfield{title}
+    \printtext{at}
+    \printfield{institution}
+  }
+  \newbibmacro*{agency+code+period}{
+    {\printtext[parens]{
+        \printfield{agency}
+        \setunit*{\addcomma\space}
+        \printfield{code}
+        \printtext{for the period}
+        \printfield{period}
+    }}
+  \newunit}
+
+\newbibmacro*{value_macro}{
+    \newunit
+    \ifboolexpr{
+        test {\iffieldundef{value}}
+    }
+    {}
+    {
+    \printtext{Ammount:}
+    \printfield{value}
+    }
+  }
+
+\newbibmacro*{pi_macro}{
+    \newunit
+    \ifboolexpr{
+        test {\iffieldundef{pis}} 
+    }
+    {}
+    {
+    \printtext{Principal investigators:}
+    \printfield{pis}
+    }
+    }
