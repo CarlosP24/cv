@@ -167,12 +167,22 @@ SmallCapsFeatures = {Letters = SmallCaps}
 %       \csuse{entrycount:\therefsection}+1}}}
 
       % Count total number of entries in each refsection
+
+\newcommand{\refsectionletter}[1]{%
+    \ifcase#1\relax%
+    \or P%
+    \or C%
+    \or O%
+    \or F%
+    \else A%
+    \fi%
+}
 \AtDataInput{%
   \csnumgdef{entrycount:\therefsection}{%
     \csuse{entrycount:\therefsection}+1}}
 % Print the labelnumber as the total number of entries in the
 % current refsection, minus the actual labelnumber, plus one
-\DeclareFieldFormat{labelnumber}{\mkbibdesc{#1}}    
+\DeclareFieldFormat{labelnumber}{\refsectionletter{\therefsection}\mkbibdesc{#1}}    
 \newrobustcmd*{\mkbibdesc}[1]{%
   \number\numexpr\csuse{entrycount:\therefsection}+1-#1\relax}
 
