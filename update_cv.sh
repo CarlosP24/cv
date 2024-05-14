@@ -3,8 +3,9 @@
 
 # Update bib databases
 # Update publications in web first!! 
+# requires local environment with python3 and pandas
 
-source venv/bin/activate    
+source ./bin/activate    
 
 python3 libraries/tsv_to_bib.py ../Personal_web/markdown_generator/outreach.tsv database/outreach.bib
 python3 libraries/tsv_to_bib.py ../Personal_web/markdown_generator/talks.tsv database/conferences.bib

@@ -8,3 +8,8 @@
 *.bcf
 *.blg
 *.xml
+*.cfg
+/bin
+/include
+/lib
+/.vscode
