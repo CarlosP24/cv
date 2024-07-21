@@ -1,6 +1,5 @@
 #!/bin/sh
 # Update CV
-
 # Update bib databases
 # Update publications in web first!! 
 # requires local environment with python3 and pandas
