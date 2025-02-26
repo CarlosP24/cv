@@ -99,6 +99,19 @@ SmallCapsFeatures = {Letters = SmallCaps}
 \vspace{2mm}
 }
 
+\newcommand{\stay}[6]{
+\begin{tabbing}
+\hspace{2cm} \= \hspace{2cm}  \= \kill
+\>{#1} \> \href{#4}{#3} \\
+\>{#2} \>\+ \textit{#5} \\
+\> \begin{minipage}{\smallertextwidth}
+\vspace{2mm}
+#6
+\end{minipage}
+\end{tabbing}
+\vspace{2mm}
+}
+
 %----------------------------------------------------------------------------------------
 %	SKILL GROUP COMMAND
 %----------------------------------------------------------------------------------------
