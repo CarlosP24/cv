@@ -8,7 +8,7 @@ output = sys.argv[2]
 
 tsv = pd.read_csv(input, sep = "\t", header = 0)
 
-type_w_titles = ["Poster", "Oral"]
+type_w_titles = ["Poster", "Oral", "Contributed"]
 outreach_types = ["Workshopper", "Logistics"]
 
 with open(output, "w") as f:
