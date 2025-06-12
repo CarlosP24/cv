@@ -1,13 +1,26 @@
 #!/bin/sh
 
-source ./bin/activate    
+if [ "$#" -ne 7 ]; then
+    echo "Usage: $0 <zotero_url> <talks_url> <outreach_url> <funding_url> <awards_url> <author_name> <output_pdf>"
+    exit 1
+fi
 
-python3 libraries/fetch_publications.py https://api.zotero.org/users/13410489/publications/items?format=bibtex "Payá, Carlos"
-python3 libraries/js_to_bib.py conferences https://carlosp24.github.io/js/talks.js database/conferences.bib
-python3 libraries/js_to_bib.py outreach https://carlosp24.github.io/js/outreach.js database/outreach.bib
-python3 libraries/js_to_bib.py funding https://carlosp24.github.io/js/funding.js database/funding.bib
-python3 libraries/js_to_bib.py awards https://carlosp24.github.io/js/awards.js database/awards.bib
+source ./bin/activate
+
+ZOTERO_URL="$1"
+TALKS_URL="$2"
+OUTREACH_URL="$3"
+FUNDING_URL="$4"
+AWARDS_URL="$5"
+AUTHOR_NAME="$6"
+OUTPUT_PDF="$7"
+
+python3 libraries/fetch_publications.py "$ZOTERO_URL" "$AUTHOR_NAME"
+python3 libraries/js_to_bib.py conferences "$TALKS_URL" database/conferences.bib
+python3 libraries/js_to_bib.py outreach "$OUTREACH_URL" database/outreach.bib
+python3 libraries/js_to_bib.py funding "$FUNDING_URL" database/funding.bib
+python3 libraries/js_to_bib.py awards "$AWARDS_URL" database/awards.bib
 
 latexmk -synctex=1 -interaction=nonstopmode -file-line-error -lualatex CV.tex
 
-cp CV.pdf ../Personal_web/files/
+mv CV.pdf "$OUTPUT_PDF"
