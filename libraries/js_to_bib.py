@@ -3,6 +3,7 @@ import re
 import sys
 import json
 from datetime import datetime
+import os
 
 def extract_json(js_text, callback):
     match = re.search(rf'{callback}\(\s*({{[\s\S]*?}})\s*\);', js_text)
@@ -91,10 +92,10 @@ MODES = {
 
 if __name__ == "__main__":
     if len(sys.argv) < 3:
-        print("Usage: python js_to_bib_generic.py <mode> <js_url> [output.bib]")
+        print("Usage: python js_to_bib.py <mode> <js_url_or_path> [output.bib]")
         sys.exit(1)
     mode = sys.argv[1]
-    js_url = sys.argv[2]
+    js_input = sys.argv[2]
     output = sys.argv[3] if len(sys.argv) > 3 else f"{mode}.bib"
 
     if mode not in MODES:
@@ -103,8 +104,17 @@ if __name__ == "__main__":
 
     callback, bib_func = MODES[mode]
 
-    response = requests.get(js_url)
-    js_text = response.text
+    # Determine if input is a URL or a local file path
+    if js_input.startswith("http://") or js_input.startswith("https://"):
+        response = requests.get(js_input)
+        js_text = response.text
+    elif os.path.isfile(js_input):
+        with open(js_input, "r", encoding="utf-8") as f:
+            js_text = f.read()
+    else:
+        print(f"Input '{js_input}' is not a valid URL or file path.")
+        sys.exit(1)
+
     data = extract_json(js_text, callback)
     entries = data.get("entries", [])
 
