@@ -27,7 +27,6 @@
 \input{structure.tex} % Include the file specifying document layout
 
 \addbibresource[label=pubs]{database/pubs.bib}
-\addbibresource[label=preprints]{database/preprints.bib}
 \addbibresource[label=confs]{database/conferences.bib}
 \addbibresource[label=outreach]{database/outreach.bib}
 \addbibresource[label=funding]{database/funding.bib}
@@ -160,11 +159,11 @@ and \href{https://wp.icmm.csic.es/tqe/}{Quantum Materials for Quantum Technologi
 \section{Publications}
 
 \defbibnote{mynote}{$^*$ indicates first theory author.}
-\begin{refsection}[pubs,preprints]
+\begin{refsection}[pubs]
     \nocite{*}
-    \printbibliography[heading=subbibliography,title=Preprints]
+    \printbibliography[heading=subbibliography,title=Preprints,keyword=preprint]
 
-    \printbibliography[heading=subbibliography,title=Journals,prenote=mynote]
+    \printbibliography[heading=subbibliography,title=Journals,prenote=mynote,keyword=journal]
 \end{refsection}
 
 %----------------------------------------------------------------------------------------

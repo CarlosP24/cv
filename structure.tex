@@ -159,16 +159,13 @@ SmallCapsFeatures = {Letters = SmallCaps}
 \ifitemannotation{highlight}
 {\textbf{#1}}
 {#1}}
-\renewcommand*{\mkbibnamefamily}[1]{
-\ifitemannotation{highlight}
-  {\textbf{#1}}
-  {#1}%
-\ifitemannotation{first}
-  {\textsuperscript{*}}
-  {}%
-\ifitemannotation{corresponding}
-  {$^\dagger$}
-  {}%
+\renewcommand*{\mkbibnamefamily}[1]{%
+  \begingroup
+    \ifitemannotation{highlight}{\def\doformat{\textbf}}{\def\doformat{}}%
+    \doformat{#1}%
+    \ifitemannotation{first}{\textsuperscript{*}}{}%
+    \ifitemannotation{corresponding}{$^\dagger$}{}%
+  \endgroup
 }%%
 
 % % Sort backwards
@@ -244,8 +241,79 @@ SmallCapsFeatures = {Letters = SmallCaps}
   [unpublished]
   {date}{\textbf{#1\isdot}}
 
+\renewbibmacro*{journal+issuetitle}{%
+  \iffieldundef{journaltitle}
+    {}
+    {\printtext[journaltitle]{%
+       \printfield[titlecase]{journaltitle}}}%
+  \setunit*{\addspace}%
+  \printfield{volume}%
+  \setunit*{\addcomma\space}%
+  \printfield{pages}%
+  \setunit*{\addspace}%
+  \printtext{(}%
+  \printfield{year}%
+  \printtext{)}%
+}
 
-  \DeclareBibliographyDriver{unpublished}{%
+\renewbibmacro*{doi+eprint+url}{%
+  \iffieldundef{doi}
+    {}
+    {\printfield{doi}}%
+}
+
+\DeclareFieldFormat{journallink}{%
+  \iffieldundef{doi}
+    {#1}
+    {\href{https://doi.org/\thefield{doi}}{#1}}%
+}
+
+\DeclareFieldFormat{pages}{#1}
+
+\DeclareBibliographyDriver{article}{%
+  \printnames{author}%
+  \setunit{\labelnamepunct}\newblock
+  \printfield{title}%
+  \setunit{\addcomma\space}%
+  \printtext[journallink]{%
+    \iffieldundef{shortjournal}
+      {\printfield{journaltitle}}
+      {\printfield{shortjournal}}%
+    \setunit*{\addcomma\space}%
+    \printfield{volume}%
+    \setunit*{\addcomma\space}%
+    \printfield{pages}%
+    \setunit*{\addspace}%
+    \printtext{(}%
+    \printfield{year}%
+    \printtext{)}%
+  }%
+  \finentry
+}
+
+\DeclareFieldFormat{noteyearlink}{%
+  \iffieldundef{doi}
+    {#1}
+    {\href{https://doi.org/\thefield{doi}}{#1}}%
+}
+
+\DeclareBibliographyDriver{misc}{%
+  \printnames{author}%
+  \setunit{\labelnamepunct}\newblock
+  \printfield{title}%
+  \setunit{\addcomma\space}%
+  \printtext[noteyearlink]{%
+    \printfield{note}%
+    \setunit*{\addspace}%
+    \printtext{(}%
+    \printfield{year}%
+    \printtext{)}%
+  }%
+  \finentry
+}
+
+
+\DeclareBibliographyDriver{unpublished}{%
   \usebibmacro{bibindex}%
   \usebibmacro{begentry}%
   \newunit\newblock
@@ -278,13 +346,9 @@ SmallCapsFeatures = {Letters = SmallCaps}
     {}%
   \usebibmacro{finentry}}
 
-
-
-
   % Funding
 
-
-  \DeclareBibliographyDriver{funding}{%
+\DeclareBibliographyDriver{funding}{%
   \usebibmacro{bibindex}%
   \usebibmacro{begentry}%
   \usebibmacro{title+institution}%
