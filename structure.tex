@@ -53,6 +53,7 @@ SmallCapsFeatures = {Letters = SmallCaps}
            giveninits=true,
            uniquename=false]{biblatex} % Bibliography handling
 
+
 \fancypagestyle{plain}{\fancyhf{}\cfoot{\thepage\ of \pageref{LastPage}}} % Define a custom page style
 \pagestyle{plain} % Use the custom page style through the document
 \renewcommand{\headrulewidth}{0pt} % Disable the default header rule
@@ -268,7 +269,16 @@ SmallCapsFeatures = {Letters = SmallCaps}
     {\href{https://doi.org/\thefield{doi}}{#1}}%
 }
 
+
 \DeclareFieldFormat{pages}{#1}
+
+\DeclareFieldFormat{citations}{
+  \iffieldundef{doi}
+    {Citations: #1}
+    {\href{https://badge.dimensions.ai/details/doi/\thefield{doi}}{Citations: #1}}%
+}
+
+
 
 \DeclareBibliographyDriver{article}{%
   \printnames{author}%
@@ -290,7 +300,7 @@ SmallCapsFeatures = {Letters = SmallCaps}
   }%
   \iffieldundef{citations}
     {}
-    {\addspace\printtext{Citations: }\printfield{citations}}%
+    {\adddot\addspace\printfield{citations}}%
   \finentry
 }
 
