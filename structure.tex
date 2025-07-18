@@ -288,6 +288,9 @@ SmallCapsFeatures = {Letters = SmallCaps}
     \printfield{year}%
     \printtext{)}%
   }%
+  \iffieldundef{citations}
+    {}
+    {\addspace\printtext{Citations: }\printfield{citations}}%
   \finentry
 }
 

@@ -2,6 +2,8 @@ import requests
 import re
 import os
 import sys
+import time
+import json
 
 def add_highlight_keyword(entry, author_name="Payá, Carlos", extra_keyword=None):
     # Find the author field
@@ -113,6 +115,50 @@ def remove_unwanted_fields(entry):
         )
     return entry
 
+def fetch_citation_metrics(entry):
+    """
+    Fetch citation metrics for @article entries with DOI and add citations field.
+    """
+    if not entry.strip().lower().startswith('@article'):
+        return entry
+    
+    # Extract DOI from the entry
+    doi_match = re.search(r'doi\s*=\s*[{"]([^}"]+)[}"]', entry, re.IGNORECASE)
+    if not doi_match:
+        return entry
+    
+    doi = doi_match.group(1).strip()
+    
+    try:
+        # Fetch metrics from Dimensions API
+        metrics_url = f"https://metrics-api.dimensions.ai/doi/{doi}"
+        response = requests.get(metrics_url, timeout=10)
+        
+        if response.status_code == 200:
+            metrics = response.json()
+            times_cited = metrics.get('times_cited', 0)
+            
+            # Add citations field to the entry
+            entry = re.sub(
+                r'(\n})\s*$',
+                f',\n\tcitations = {{{times_cited}}}\n}}',
+                entry,
+                count=1
+            )
+            
+            print(f"Added citations ({times_cited}) for DOI: {doi}")
+            
+        else:
+            print(f"Failed to fetch metrics for DOI: {doi} (status: {response.status_code})")
+            
+    except Exception as e:
+        print(f"Error fetching metrics for DOI {doi}: {e}")
+    
+    # Add a small delay to be respectful to the API
+    time.sleep(0.5)
+    
+    return entry
+
 if __name__ == "__main__":
     if len(sys.argv) < 3:
         print("Usage: python fetch_publications.py <zotero_bibtex_url> <author_name>")
@@ -137,7 +183,9 @@ if __name__ == "__main__":
         entry = fix_month_brackets(entry)
         entry = remove_unwanted_fields(entry)
         if entry.startswith('@article'):
-            all_entries.append(add_highlight_keyword(entry, author_name=author_name, extra_keyword="journal"))
+            entry = add_highlight_keyword(entry, author_name=author_name, extra_keyword="journal")
+            entry = fetch_citation_metrics(entry)  # Add this line
+            all_entries.append(entry)
         elif entry.startswith('@misc'):
             entry = fix_misc_note(entry)
             all_entries.append(add_highlight_keyword(entry, author_name=author_name, extra_keyword="preprint"))
