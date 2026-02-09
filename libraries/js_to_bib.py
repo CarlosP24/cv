@@ -12,7 +12,7 @@ def extract_json(js_text, callback):
     return json.loads(match.group(1))
 
 def bib_conference(row):
-    type_w_titles = ["Poster", "Oral", "Contributed"]
+    type_w_titles = ["Poster", "Oral", "Tutorial", "Contributed"]
     outreach_types = ["Workshopper", "Logistics"]
     key = "".join(row.get("url_slug", "").split(" "))
     bib = f"@unpublished{{{key},\n"
