@@ -20,28 +20,21 @@
 \usepackage{fancyhdr} % Customize the header and footer
 
 \usepackage{lastpage} % Required for calculating the number of pages in the document
-\usepackage{xcolor}
-\usepackage[unicode=true, colorlinks=true, citecolor={blue!80!black}, urlcolor={blue!20!black}, linkcolor = {blue!20!black}]{hyperref}
+
+\usepackage{fourier-otf}               % Main serif + math font (matches thesis)
+\usepackage[condensed]{roboto}         % Sans-serif font for headings (matches thesis)
+\renewcommand{\seriesdefault}{m}       % Restore serif defaults after roboto
+
+\usepackage{xcolor} % Required for custom colors
+\definecolor{my_blue_d}{RGB}{0, 119, 200}
+\definecolor{my_green_d}{RGB}{0, 132, 61}
+\definecolor{my_red_d}{RGB}{175, 7, 31}
+
+\usepackage[unicode=true, colorlinks=true, citecolor=my_green_d, urlcolor=my_blue_d, linkcolor=my_blue_d]{hyperref}
 \setcounter{secnumdepth}{0} % Suppress section numbering
 
-%\usepackage[proportional,scaled=1.064]{erewhon} % Use the Erewhon font
-%\usepackage[erewhon,vvarbb,bigdelims]{newtxmath} % Use the Erewhon font
-\usepackage[utf8]{inputenc} % Required for inputting international characters
-\usepackage[T1]{fontenc} % Output font encoding for international characters
-
-\usepackage{fontspec} % Required for specification of custom fonts
-\setmainfont[
-BoldFont = Erewhon-Bold,
-ItalicFont = Erewhon-Italic,
-BoldItalicFont = Erewhon-BoldItalic,
-SmallCapsFeatures = {Letters = SmallCaps}
-]{Erewhon-Regular}
-
-\usepackage{color} % Required for custom colors
-\definecolor{slateblue}{rgb}{0.17,0.22,0.34}
-
 \usepackage{sectsty} % Allows customization of titles
-\sectionfont{\color{slateblue}} % Color section titles
+\sectionfont{\roboto\bfseries\color{my_blue_d}} % Roboto bold blue section titles
 
 \usepackage[backend=biber,
            bibstyle=numeric,
@@ -78,7 +71,7 @@ SmallCapsFeatures = {Letters = SmallCaps}
 %----------------------------------------------------------------------------------------
 
 \renewcommand{\title}[1]{
-{\huge{\color{slateblue}\textbf{#1}}}\\ % Header section name and color
+{\huge{\color{my_blue_d}\roboto\bfseries #1}}\\ % Header section name and color
 \rule{\textwidth}{0.5mm}\\ % Rule under the header
 }
 
