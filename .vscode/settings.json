@@ -1,3 +1,24 @@
 {
-    "julia.environmentPath": "/Users/carlospaya/Library/CloudStorage/OneDrive-csic.es/Other/CV"
+    "julia.environmentPath": "/Users/carlospaya/Library/CloudStorage/OneDrive-csic.es/Other/CV",
+    "latex-workshop.latex.recipes": [
+        {
+            "name": "latexmk (LuaLaTeX)",
+            "tools": ["latexmk-lualatex"]
+        }
+    ],
+    "latex-workshop.latex.tools": [
+        {
+            "name": "latexmk-lualatex",
+            "command": "latexmk",
+            "args": [
+                "-synctex=1",
+                "-interaction=nonstopmode",
+                "-file-line-error",
+                "-lualatex",
+                "%DOC%"
+            ],
+            "env": {}
+        }
+    ],
+    "latex-workshop.latex.recipe.default": "latexmk (LuaLaTeX)"
 }

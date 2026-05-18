@@ -16,6 +16,7 @@
 %----------------------------------------------------------------------------------------
 
 \usepackage[a4paper, hmargin=25mm, vmargin=30mm, top=20mm]{geometry} % Use A4 paper and set margins
+\raggedbottom % Prevent vertical stretching between sections
 
 \usepackage{fancyhdr} % Customize the header and footer
 
@@ -27,14 +28,18 @@
 
 \usepackage{xcolor} % Required for custom colors
 \definecolor{my_blue_d}{RGB}{0, 119, 200}
+\definecolor{my_blue_dark}{RGB}{0, 70, 140}
 \definecolor{my_green_d}{RGB}{0, 132, 61}
 \definecolor{my_red_d}{RGB}{175, 7, 31}
 
-\usepackage[unicode=true, colorlinks=true, citecolor=my_green_d, urlcolor=my_blue_d, linkcolor=my_blue_d]{hyperref}
+\usepackage[unicode=true, colorlinks=true, citecolor=black, urlcolor=black, linkcolor=black]{hyperref}
 \setcounter{secnumdepth}{0} % Suppress section numbering
 
-\usepackage{sectsty} % Allows customization of titles
-\sectionfont{\roboto\bfseries\color{my_blue_d}} % Roboto bold blue section titles
+\usepackage{titlesec} % Allows customization of titles and spacing
+\titleformat{\section}{\Large\roboto\bfseries\color{my_blue_dark}}{}{0em}{}
+\titlespacing*{\section}{0pt}{2ex plus .5ex minus .2ex}{0.5ex}
+\titleformat{\subsection}{\large\roboto\bfseries\color{black}}{}{0em}{}
+\titlespacing*{\subsection}{0pt}{1.5ex plus .3ex minus .2ex}{0.2ex}
 
 \usepackage[backend=biber,
            bibstyle=numeric,
@@ -176,14 +181,16 @@
     \ifcase#1\relax%
     \or P%
     \or C%
-    \or O%
     \or F%
+    \or O%
     \else A%
     \fi%
 }
 \AtDataInput{%
-  \csnumgdef{entrycount:\therefsection}{%
-    \csuse{entrycount:\therefsection}+1}}
+  \ifkeyword{Attended}
+    {}
+    {\csnumgdef{entrycount:\therefsection}{%
+      \csuse{entrycount:\therefsection}+1}}}
 % Print the labelnumber as the total number of entries in the
 % current refsection, minus the actual labelnumber, plus one
 \DeclareFieldFormat{labelnumber}{\refsectionletter{\therefsection}\mkbibdesc{#1}}    
@@ -225,7 +232,17 @@
 % Citation formats custom (https://tex.stackexchange.com/questions/12806/guidelines-for-customizing-biblatex-styles)
 \DeclareFieldFormat
   [article]
-  {title}{\textit{#1\isdot}}
+  {title}{#1}
+
+\DeclareFieldFormat
+  [misc]
+  {title}{#1}
+
+\DeclareFieldFormat
+  [unpublished]
+  {title}{#1}
+
+\renewcommand*{\finentrypunct}{}
 
 \DeclareFieldFormat
   [unpublished]
@@ -259,8 +276,10 @@
 \DeclareFieldFormat{journallink}{%
   \iffieldundef{doi}
     {#1}
-    {\href{https://doi.org/\thefield{doi}}{#1}}%
+    {\href{https://doi.org/\thefield{doi}}{\textcolor{my_green_d}{#1}}}%
 }
+
+\DeclareFieldFormat{arxivlink}{\href{https://arxiv.org/abs/#1}{\textcolor{my_red_d}{arXiv:#1}}}
 
 
 \DeclareFieldFormat{pages}{#1}
@@ -274,10 +293,13 @@
 
 
 \DeclareBibliographyDriver{article}{%
-  \printnames{author}%
-  \setunit{\labelnamepunct}\newblock
+  % Row 1: title
   \printfield{title}%
-  \setunit{\addcomma\space}%
+  \newline
+  % Row 2: authors
+  \printnames{author}%
+  \newline
+  % Row 3: journal reference in green, arXiv in red
   \printtext[journallink]{%
     \iffieldundef{shortjournal}
       {\printfield{journaltitle}}
@@ -287,70 +309,58 @@
     \setunit*{\addcomma\space}%
     \printfield{pages}%
     \setunit*{\addspace}%
-    \printtext{(}%
-    \printfield{year}%
-    \printtext{)}%
+    \printtext{(}\printfield{year}\printtext{)}%
   }%
+  \iffieldundef{eprint}
+    {}
+    {\addcomma\addspace\printfield[arxivlink]{eprint}}%
+  % Row 4: citation count
   \iffieldundef{citations}
     {}
-    {\adddot\addspace\printfield{citations}}%
+    {\ifnumgreater{\thefield{citations}}{0}
+      {\newline\printfield{citations}}
+      {}}%
   \finentry
 }
 
 \DeclareFieldFormat{noteyearlink}{%
   \iffieldundef{doi}
     {#1}
-    {\href{https://doi.org/\thefield{doi}}{#1}}%
+    {\href{https://doi.org/\thefield{doi}}{\textcolor{my_red_d}{#1}}}%
 }
 
 \DeclareBibliographyDriver{misc}{%
-  \printnames{author}%
-  \setunit{\labelnamepunct}\newblock
+  % Row 1: title
   \printfield{title}%
-  \setunit{\addcomma\space}%
-  \printtext[noteyearlink]{%
-    \printfield{note}%
-    \setunit*{\addspace}%
-    \printtext{(}%
-    \printfield{year}%
-    \printtext{)}%
-  }%
+  \newline
+  % Row 2: authors
+  \printnames{author}%
+  % Row 3: omitted for preprints
+  % Row 4: arXiv reference in red (via note field)
+  \newline
+  \printfield[noteyearlink]{note}%
   \finentry
 }
 
 
 \DeclareBibliographyDriver{unpublished}{%
-  \usebibmacro{bibindex}%
-  \usebibmacro{begentry}%
-  \newunit\newblock
-  \usebibmacro{location+date}%
-  \usebibmacro{author}%
-  \setunit{\printdelim{nametitledelim}}\newblock
-  \usebibmacro{title}%
-  \newunit
-  \printlist{language}%
-  \newunit\newblock
-  \usebibmacro{byauthor}%
-  \newunit\newblock
-  \printfield{howpublished}%
-  \newunit\newblock
-  \usebibmacro{event+venue+date}%
-  \newunit\newblock
-  \printfield{type}%
-  \newunit\newblock
-  \printfield{note}%
-  \newunit\newblock
-  \usebibmacro{doi+eprint+url}%
-  \newunit\newblock
-  \usebibmacro{addendum+pubstate}%
-  \setunit{\bibpagerefpunct}\newblock
-  \usebibmacro{pageref}%
-  \newunit\newblock
-  \iftoggle{bbx:related}
-    {\usebibmacro{related:init}%
-     \usebibmacro{related}}
-    {}%
-  \usebibmacro{finentry}}
+  % Row 1: Bold date. Conference name.
+  \textbf{%
+    \iffieldundef{month}
+      {\printfield{year}}
+      {\mkbibmonth{\thefield{month}}\addnbspace\printfield{year}}%
+  }%
+  \printtext{. }%
+  \printfield{title}%
+  \newline
+  % Row 2: Venue
+  \printfield{venue}%
+  % Row 3: contribution type + italic title (only if type is defined)
+  \iffieldundef{type}
+    {}
+    {\newline\printfield{type}\addspace\textit{\printfield{note}}}%
+  \finentry
+}
 
   % Funding
 

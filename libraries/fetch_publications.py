@@ -115,6 +115,70 @@ def remove_unwanted_fields(entry):
         )
     return entry
 
+def load_arxiv_mapping(js_file):
+    """
+    Build a DOI -> arXiv ID mapping from publications.js (jsonarXivFeed format).
+    Falls back to title-based matching for entries with missing DOIs.
+    """
+    if not os.path.isfile(js_file):
+        return {}, {}
+    with open(js_file, 'r', encoding='utf-8') as f:
+        js_text = f.read()
+    match = re.search(r'jsonarXivFeed\((\{[\s\S]*\})\s*\)', js_text)
+    if not match:
+        return {}, {}
+    data = json.loads(match.group(1))
+    doi_map = {}    # doi -> arxiv_id
+    title_map = {}  # normalised_title -> arxiv_id
+    for entry in data.get('entries', []):
+        doi = entry.get('doi', '').strip()
+        arxiv_url = entry.get('id', '')
+        title = entry.get('title', '')
+        arxiv_match = re.search(r'arxiv\.org/abs/([\d.]+)', arxiv_url, re.IGNORECASE)
+        if arxiv_match:
+            arxiv_id = arxiv_match.group(1)
+            if doi:
+                doi_map[doi] = arxiv_id
+            if title:
+                # normalise: lowercase, collapse whitespace
+                norm = re.sub(r'\s+', ' ', title.lower().strip())
+                title_map[norm] = arxiv_id
+    return doi_map, title_map
+
+
+def add_eprint_field(entry, arxiv_mapping):
+    """
+    Add eprint = {arXiv ID} to @article entries.
+    arxiv_mapping is a (doi_map, title_map) tuple as returned by load_arxiv_mapping.
+    """
+    if not entry.strip().lower().startswith('@article'):
+        return entry
+    doi_map, title_map = arxiv_mapping
+    # Try DOI lookup first
+    doi_match = re.search(r'doi\s*=\s*[{"]([^}"]+)[}"]', entry, re.IGNORECASE)
+    arxiv_id = None
+    if doi_match:
+        arxiv_id = doi_map.get(doi_match.group(1).strip())
+    # Fall back to title lookup
+    if not arxiv_id:
+        # Use a pattern that handles one level of nested braces (e.g. {Hermitian})
+        title_match = re.search(r'title\s*=\s*\{((?:[^{}]|\{[^{}]*\})*)\}', entry, re.IGNORECASE)
+        if title_match:
+            raw_title = re.sub(r'[{}]', '', title_match.group(1))
+            norm = re.sub(r'\s+', ' ', raw_title.lower().strip())
+            arxiv_id = title_map.get(norm)
+    if not arxiv_id:
+        return entry
+    entry = re.sub(
+        r'(\n})\s*$',
+        f',\n\teprint = {{{arxiv_id}}}\n}}',
+        entry,
+        count=1
+    )
+    return entry
+
+
+
 def fetch_citation_metrics(entry):
     """
     Fetch citation metrics for @article entries with DOI and add citations field.
@@ -170,6 +234,14 @@ if __name__ == "__main__":
     response = requests.get(url)
     bibtex_data = response.text
 
+    # Load arXiv mapping from publications.js (auto-detected relative to this script)
+    base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    arxiv_js = os.path.join(base_dir, 'js', 'publications.js')
+    arxiv_mapping = load_arxiv_mapping(arxiv_js)
+    doi_map, _ = arxiv_mapping
+    if doi_map:
+        print(f"Loaded {len(doi_map)} DOI→arXiv mappings from {arxiv_js}")
+
     # Split entries
     all_entries = []
 
@@ -184,7 +256,8 @@ if __name__ == "__main__":
         entry = remove_unwanted_fields(entry)
         if entry.startswith('@article'):
             entry = add_highlight_keyword(entry, author_name=author_name, extra_keyword="journal")
-            entry = fetch_citation_metrics(entry)  # Add this line
+            entry = fetch_citation_metrics(entry)
+            entry = add_eprint_field(entry, arxiv_mapping)
             all_entries.append(entry)
         elif entry.startswith('@misc'):
             entry = fix_misc_note(entry)
