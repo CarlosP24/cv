@@ -150,9 +150,11 @@ and \href{https://wp.icmm.csic.es/tqe/}{Quantum Materials for Quantum Technologi
 \defbibnote{mynote}{$^*$ indicates first theory author.}
 \begin{refsection}[pubs]
     \nocite{*}
-    \printbibliography[heading=subbibliography,title=Preprints,keyword=preprint,prefixnumbers=P]
+    \newrefcontext[labelprefix=P]
+    \printbibliography[heading=subbibliography,title=Preprints,keyword=preprint]
 
-    \printbibliography[heading=subbibliography,title=Journals,prenote=mynote,keyword=journal,prefixnumbers=P]
+    \printbibliography[heading=subbibliography,title=Journals,prenote=mynote,keyword=journal]
+    \endrefcontext
 \end{refsection}
 
 %----------------------------------------------------------------------------------------
@@ -163,11 +165,13 @@ and \href{https://wp.icmm.csic.es/tqe/}{Quantum Materials for Quantum Technologi
 
 \begin{refsection}[confs]
     \nocite{*}
-    \printbibliography[heading=subbibliography,title=Tutorials,keyword=Tutorial,prefixnumbers=C]
+    \newrefcontext[labelprefix=C]
+    \printbibliography[heading=subbibliography,title=Tutorials,keyword=Tutorial]
 
-    \printbibliography[heading=subbibliography,title=Contributed Talks,keyword=Contributed,prefixnumbers=C]
+    \printbibliography[heading=subbibliography,title=Contributed Talks,keyword=Contributed]
 
-    \printbibliography[heading=subbibliography,title=Poster contributions,keyword=Poster,prefixnumbers=C]
+    \printbibliography[heading=subbibliography,title=Poster contributions,keyword=Poster]
+    \endrefcontext
 \end{refsection}
 
 %----------------------------------------------------------------------------------------
@@ -193,9 +197,11 @@ and \href{https://wp.icmm.csic.es/tqe/}{Quantum Materials for Quantum Technologi
 
 \begin{refsection}[funding]
     \nocite{*}
-    \printbibliography[heading=subbibliography,title=Student grants,keyword=student,prefixnumbers=F]
+    \newrefcontext[labelprefix=F]
+    \printbibliography[heading=subbibliography,title=Student grants,keyword=student]
 
-    \printbibliography[heading=subbibliography,title=Participation in funded projects,keyword=participation,prefixnumbers=F]
+    \printbibliography[heading=subbibliography,title=Participation in funded projects,keyword=participation]
+    \endrefcontext
 \end{refsection}
 
 %----------------------------------------------------------------------------------------
@@ -214,7 +220,9 @@ and \href{https://wp.icmm.csic.es/tqe/}{Quantum Materials for Quantum Technologi
 \vspace{-4mm}
 \begin{refsection}[outreach]
     \nocite{*}
-    \printbibliography[heading=subbibliography,title=Events,prefixnumbers=O]
+    \newrefcontext[labelprefix=O]
+    \printbibliography[heading=subbibliography,title=Events]
+    \endrefcontext
 \end{refsection}
 
 %----------------------------------------------------------------------------------------
@@ -225,7 +233,9 @@ and \href{https://wp.icmm.csic.es/tqe/}{Quantum Materials for Quantum Technologi
 
 \begin{refsection}[awards]
     \nocite{*}
-    \printbibliography[heading=subbibliography,title=Awards and fellowships,prefixnumbers=A]
+    \newrefcontext[labelprefix=A]
+    \printbibliography[heading=subbibliography,title=Awards and fellowships]
+    \endrefcontext
 \end{refsection}
 
 %----------------------------------------------------------------------------------------
