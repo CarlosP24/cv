@@ -22,10 +22,9 @@
 
 \usepackage{lastpage} % Required for calculating the number of pages in the document
 
+\usepackage{fontspec}                  % OpenType font loading for LuaLaTeX (must come first)
 \usepackage{erewhon}                   % Main serif + math font (Utopia-based, matches thesis)
-\usepackage{fontspec}                  % OpenType font loading for LuaLaTeX
 \newfontfamily\roboto[BoldFont={Roboto-Bold.otf}]{Roboto-Regular.otf} % Sans-serif for headings
-\renewcommand{\seriesdefault}{m}       % Restore serif defaults
 
 \usepackage{xcolor} % Required for custom colors
 \definecolor{my_blue_d}{RGB}{0, 119, 200}
@@ -178,25 +177,53 @@
       % Count total number of entries in each refsection
 
 % Each refsection has its own counter prefix
-\newcommand{\refsectionletter}[1]{%
-    \ifcase#1\relax%
-    \or P%
-    \or C%
-    \or F%
-    \or O%
-    \else A%
-    \fi%
-}
+% \newcommand{\refsectionletter}[1]{%
+%     \ifcase#1\relax%
+%     \or P%
+%     \or C%
+%     \or F%
+%     \or O%
+%     \else A%
+%     \fi%
+% }
+\makeatletter
+% Count entries per refsection during current run.
+% Guard against double-firing: each entry appears in 2 datalists in the bbl.
 \AtDataInput{%
   \ifkeyword{Attended}
     {}
-    {\csnumgdef{entrycount:\therefsection}{%
-      \csuse{entrycount:\therefsection}+1}}}
-% Print the labelnumber as the total number of entries in the
-% current refsection, minus the actual labelnumber, plus one
-\DeclareFieldFormat{labelnumber}{\refsectionletter{\therefsection}\mkbibdesc{#1}}    
+    {\ifcsdef{seenentry:\thefield{entrykey}}{}{%
+      \csgdef{seenentry:\thefield{entrykey}}{}%
+      \ifcsdef{realentrycount:\therefsection}{}{\csgdef{realentrycount:\therefsection}{0}}%
+      \csnumgdef{realentrycount:\therefsection}{%
+        \csuse{realentrycount:\therefsection}+1}%
+    }}%
+}
+
+% Persist counts to .aux so reverse-numbering is stable across runs
+\newcommand\blxsavecnt[1]{%
+  \ifcsdef{realentrycount:#1}{%
+    \immediate\write\@auxout{%
+      \string\csnumgdef{entrycount:#1}%
+        {\number\numexpr\csname realentrycount:#1\endcsname+0\relax}%
+    }%
+  }{}%
+}
+\AtEndDocument{%
+  \blxsavecnt{1}\blxsavecnt{2}\blxsavecnt{3}%
+  \blxsavecnt{4}\blxsavecnt{5}\blxsavecnt{6}%
+  \blxsavecnt{7}\blxsavecnt{8}\blxsavecnt{9}%
+}
+
+% Reverse labelnumber; letter prefix comes from \newrefcontext[labelprefix=...]
+\DeclareFieldFormat{labelnumber}{\mkbibdesc{#1}}
 \newrobustcmd*{\mkbibdesc}[1]{%
-  \number\numexpr\csuse{entrycount:\therefsection}+1-#1\relax}
+  \number\numexpr
+    \@ifundefined{entrycount:\therefsection}%
+      {\csname realentrycount:\therefsection\endcsname}%
+      {\csname entrycount:\therefsection\endcsname}%
+  +1-#1\relax}
+\makeatother
 
 
 % Sort by year, month, day, title
@@ -314,7 +341,16 @@
   }%
   \iffieldundef{eprint}
     {}
-    {\addcomma\addspace\printfield[arxivlink]{eprint}}%
+    {\addcomma\addspace
+     \printtext{%
+       \href{https://arxiv.org/abs/\thefield{eprint}}{%
+         \textcolor{my_red_d}{%
+           arXiv:\thefield{eprint}%
+           \iffieldundef{eprintyear}{}{\space(\thefield{eprintyear})}%
+         }%
+       }%
+     }%
+    }%
   % Row 4: citation count
   \iffieldundef{citations}
     {}
