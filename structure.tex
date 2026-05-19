@@ -186,21 +186,26 @@
 %     \else A%
 %     \fi%
 % }
+
+
+
 \makeatletter
-% Count entries per refsection during current run.
-% Guard against double-firing: each entry appears in 2 datalists in the bbl.
+% Count printable entries per refsection (skip Attended, deduplicate across datalists).
 \AtDataInput{%
   \ifkeyword{Attended}
     {}
     {\ifcsdef{seenentry:\thefield{entrykey}}{}{%
       \csgdef{seenentry:\thefield{entrykey}}{}%
-      \ifcsdef{realentrycount:\therefsection}{}{\csgdef{realentrycount:\therefsection}{0}}%
-      \csnumgdef{realentrycount:\therefsection}{%
-        \csuse{realentrycount:\therefsection}+1}%
+      \ifcsdef{realentrycount:\therefsection}{%
+        \csnumgdef{realentrycount:\therefsection}{%
+          \csname realentrycount:\therefsection\endcsname+1}%
+      }{%
+        \csnumgdef{realentrycount:\therefsection}{1}%
+      }%
     }}%
 }
 
-% Persist counts to .aux so reverse-numbering is stable across runs
+% Persist counts to .aux for stable reverse-numbering across runs.
 \newcommand\blxsavecnt[1]{%
   \ifcsdef{realentrycount:#1}{%
     \immediate\write\@auxout{%
@@ -215,16 +220,17 @@
   \blxsavecnt{7}\blxsavecnt{8}\blxsavecnt{9}%
 }
 
-% Reverse labelnumber; letter prefix comes from \newrefcontext[labelprefix=...]
-\DeclareFieldFormat{labelnumber}{\mkbibdesc{#1}}
-\newrobustcmd*{\mkbibdesc}[1]{%
-  \number\numexpr
-    \@ifundefined{entrycount:\therefsection}%
-      {\csname realentrycount:\therefsection\endcsname}%
-      {\csname entrycount:\therefsection\endcsname}%
-  +1-#1\relax}
+% Reverse labelnumber: N+1-k maps first-printed (newest, k=1) to highest label N.
+% defernumbers=true assigns k=1,2,...,N in printing order (ascending).
+% Falls back to realentrycount (current-run count) on cold builds.
+\DeclareFieldFormat{labelnumber}{%
+  \@ifundefined{entrycount:\therefsection}%
+    {\@ifundefined{realentrycount:\therefsection}%
+       {#1}%
+       {\number\numexpr\csname realentrycount:\therefsection\endcsname+1-#1\relax}}%
+    {\number\numexpr\csname entrycount:\therefsection\endcsname+1-#1\relax}%
+}
 \makeatother
-
 
 % Sort by year, month, day, title
 \DeclareSortingScheme{ymdnt}{
