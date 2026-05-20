@@ -1,0 +1,78 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Cover Letter Template matching CV style
+% Compile with LuaLaTeX or XeLaTeX
+% Requirements: Erewhon and Roboto fonts.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\documentclass[10pt, a4paper]{article}
+
+%----------------------------------------------------------------------------------------
+%	PACKAGES AND DOCUMENT CONFIGURATIONS
+%----------------------------------------------------------------------------------------
+
+\usepackage[a4paper, hmargin=25mm, vmargin=30mm, top=20mm]{geometry}
+\raggedbottom
+
+\usepackage{fontspec}
+\usepackage{erewhon}
+\newfontfamily\roboto[BoldFont={Roboto-Bold.otf}]{Roboto-Regular.otf}
+
+\usepackage{xcolor}
+\definecolor{my_blue_d}{RGB}{0, 119, 200}
+\definecolor{my_blue_dark}{RGB}{0, 70, 140}
+
+\usepackage[unicode=true, colorlinks=true, urlcolor=my_blue_dark, linkcolor=my_blue_dark]{hyperref}
+
+\pagestyle{empty} % No headers or footers for cover letter
+
+\setlength\parindent{0pt}
+\setlength\parskip{1em}
+
+%----------------------------------------------------------------------------------------
+
+\begin{document}
+
+%----------------------------------------------------------------------------------------
+%	SENDER INFORMATION AND DATE (Ragged Left)
+%----------------------------------------------------------------------------------------
+
+\begin{flushright}
+{\Large{\color{my_blue_d}\roboto\bfseries Carlos Payá}}\\[0.2em]
+Instituto de Ciencia de Materiales de Madrid (\href{https://www.icmm.csic.es/}{ICMM}), \href{https://www.csic.es/en}{CSIC} \\
+Madrid, Spain \\[0.2em]
+\href{mailto:carlos.paya@csic.es}{carlos.paya@csic.es} \\
+\href{https://carlosp24.github.io}{carlosp24.github.io} \\[1em]
+\bf\today
+\end{flushright}
+
+\vspace{0.5cm}
+
+%----------------------------------------------------------------------------------------
+%	RECIPIENT AND SALUTATION
+%----------------------------------------------------------------------------------------
+
+\begin{flushleft}
+\textbf{Prof. NAME} \\
+Affiliation
+\end{flushleft}
+
+\vspace{0.5cm}
+
+Dear Prof. NAME,
+
+%----------------------------------------------------------------------------------------
+%	BODY PARAGRAPHS
+%----------------------------------------------------------------------------------------
+Stuff
+\vspace{0.5cm}
+
+%----------------------------------------------------------------------------------------
+%	SIGNATURE
+%----------------------------------------------------------------------------------------
+
+Best regards,\\[1em]
+\textbf{Carlos Payá} \\
+PhD Candidate, \\
+Instituto de Ciencia de Materiales de Madrid (ICMM), CSIC\\
+
+\end{document}
