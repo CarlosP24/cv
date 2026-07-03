@@ -178,6 +178,65 @@ def add_eprint_field(entry, arxiv_mapping):
     return entry
 
 
+def add_misc_eprint_fields(entry):
+    """
+    Add eprint/eprintyear to @misc preprints when possible.
+    Priority:
+    1) existing eprint field
+    2) arXiv ID from note field (arXiv:XXXX.XXXXX)
+    3) arXiv DOI pattern (10.48550/arXiv.XXXX.XXXXX)
+    """
+    if not entry.strip().lower().startswith('@misc'):
+        return entry
+
+    has_eprint = re.search(r'eprint\s*=\s*[{"]([^}"]+)[}"]', entry, re.IGNORECASE)
+    year_match = re.search(r'year\s*=\s*[{"]?(\d{4})[}"]?', entry, re.IGNORECASE)
+
+    if has_eprint:
+        # Ensure eprintyear is present if year exists.
+        has_eprintyear = re.search(r'eprintyear\s*=\s*[{"]?(\d{4})[}"]?', entry, re.IGNORECASE)
+        if not has_eprintyear and year_match:
+            entry = re.sub(
+                r'(\n})\s*$',
+                f'\n\teprintyear = {{{year_match.group(1)}}},\n}}',
+                entry,
+                count=1
+            )
+            entry = re.sub(r',\s*,', ',', entry)
+        return entry
+
+    arxiv_id = None
+
+    note_match = re.search(r'note\s*=\s*[{"]([^}"]+)[}"]', entry, re.IGNORECASE)
+    if note_match:
+        m = re.search(r'arXiv:(\d{4}\.\d{4,5})', note_match.group(1), re.IGNORECASE)
+        if m:
+            arxiv_id = m.group(1)
+
+    if not arxiv_id:
+        doi_match = re.search(r'doi\s*=\s*[{"]([^}"]+)[}"]', entry, re.IGNORECASE)
+        if doi_match:
+            m = re.search(r'10\.48550/arXiv\.(\d{4}\.\d{4,5})', doi_match.group(1), re.IGNORECASE)
+            if m:
+                arxiv_id = m.group(1)
+
+    if not arxiv_id:
+        return entry
+
+    extra = f'\n\teprint = {{{arxiv_id}}},'
+    if year_match:
+        extra += f'\n\teprintyear = {{{year_match.group(1)}}},'
+
+    entry = re.sub(
+        r'(\n})\s*$',
+        extra + '\n}',
+        entry,
+        count=1
+    )
+    entry = re.sub(r',\s*,', ',', entry)
+    return entry
+
+
 
 def fetch_citation_metrics(entry):
     """
@@ -261,6 +320,7 @@ if __name__ == "__main__":
             all_entries.append(entry)
         elif entry.startswith('@misc'):
             entry = fix_misc_note(entry)
+            entry = add_misc_eprint_fields(entry)
             all_entries.append(add_highlight_keyword(entry, author_name=author_name, extra_keyword="preprint"))
         else:
             all_entries.append(entry)
