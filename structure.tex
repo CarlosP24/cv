@@ -378,10 +378,16 @@
   \newline
   % Row 2: authors
   \printnames{author}%
-  % Row 3: omitted for preprints
-  % Row 4: arXiv reference in red (via note field)
+  % Row 3: arXiv reference in red (prefer eprint when available)
   \newline
-  \printfield[noteyearlink]{note}%
+  \iffieldundef{eprint}
+    {\printfield[noteyearlink]{note}}
+    {\href{https://arxiv.org/abs/\thefield{eprint}}{%
+      \textcolor{my_red_d}{%
+        arXiv:\thefield{eprint}%
+        \iffieldundef{eprintyear}{}{\space(\thefield{eprintyear})}%
+      }%
+    }}%
   \finentry
 }
 
