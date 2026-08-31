@@ -284,7 +284,7 @@ def fetch_citation_metrics(entry):
 
 if __name__ == "__main__":
     if len(sys.argv) < 3:
-        print("Usage: python fetch_publications.py <zotero_bibtex_url> <author_name>")
+        print("Usage: python fetch_publications.py <zotero_bibtex_url> <author_name> [arxiv_publications_js_path]")
         sys.exit(1)
 
     url = sys.argv[1]
@@ -293,9 +293,14 @@ if __name__ == "__main__":
     response = requests.get(url)
     bibtex_data = response.text
 
-    # Load arXiv mapping from publications.js (auto-detected relative to this script)
-    base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-    arxiv_js = os.path.join(base_dir, 'js', 'publications.js')
+    # Load arXiv mapping from publications.js. Path can be passed explicitly
+    # (e.g. the freshly-fetched copy from the caller's site build) so this
+    # doesn't silently fall back to a stale copy committed inside this repo.
+    if len(sys.argv) >= 4:
+        arxiv_js = sys.argv[3]
+    else:
+        base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+        arxiv_js = os.path.join(base_dir, 'js', 'publications.js')
     arxiv_mapping = load_arxiv_mapping(arxiv_js)
     doi_map, _ = arxiv_mapping
     if doi_map:

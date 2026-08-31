@@ -1,7 +1,7 @@
 #!/bin/sh
 
-if [ "$#" -ne 6 ]; then
-    echo "Usage: $0 <zotero_url> <talks_url> <outreach_url> <funding_url> <awards_url> <author_name>"
+if [ "$#" -lt 6 ] || [ "$#" -gt 7 ]; then
+    echo "Usage: $0 <zotero_url> <talks_url> <outreach_url> <funding_url> <awards_url> <author_name> [arxiv_publications_js_path]"
     exit 1
 fi
 
@@ -13,8 +13,9 @@ OUTREACH_URL="$3"
 FUNDING_URL="$4"
 AWARDS_URL="$5"
 AUTHOR_NAME="$6"
+ARXIV_JS="$7"
 
-python3 libraries/fetch_publications.py "$ZOTERO_URL" "$AUTHOR_NAME"
+python3 libraries/fetch_publications.py "$ZOTERO_URL" "$AUTHOR_NAME" $ARXIV_JS
 python3 libraries/js_to_bib.py conferences "$TALKS_URL" database/conferences.bib
 python3 libraries/js_to_bib.py outreach "$OUTREACH_URL" database/outreach.bib
 python3 libraries/js_to_bib.py funding "$FUNDING_URL" database/funding.bib
