@@ -404,10 +404,13 @@
   \newline
   % Row 2: Venue
   \printfield{venue}%
-  % Row 3: contribution type + italic title (only if type is defined)
+  % Row 3: contribution type + italic title (only if type is defined), linked to url (slides) if any
   \iffieldundef{type}
     {}
-    {\newline\printfield{type}\addspace\textit{\printfield{note}}}%
+    {\newline\printfield{type}\addspace
+     \iffieldundef{url}
+       {\textit{\printfield{note}}}
+       {\href{\thefield{url}}{\textit{\printfield{note}}}}}%
   \finentry
 }
 

@@ -13,7 +13,7 @@ def extract_json(js_text, callback):
 
 def bib_conference(row):
     type_w_titles = ["Poster", "Oral", "Tutorial", "Contributed"]
-    outreach_types = ["Workshopper", "Logistics"]
+    outreach_types = ["Speaker", "Workshopper", "Logistics"]
     key = "".join(row.get("url_slug", "").split(" "))
     bib = f"@unpublished{{{key},\n"
     bib += f"title = {{{row.get('title', '')}}},\n"
@@ -29,14 +29,19 @@ def bib_conference(row):
             pass
     type_ = row.get('type', '')
     bib += f"keywords = {{{type_}}},\n"
+    # Slides (PDF or Quarto HTML) are the link target; outreach falls back to the event page
+    slides_url = row.get('pdf_url', '') or row.get('html_url', '')
+    url = ''
     if type_ in type_w_titles:
         bib += f"type = {{ {type_} title:}},\n"
         bib += f"note = {{{row.get('cont_title', '')}}},\n"
-        bib += f"url = {{{row.get('pdf_url', '')}}},\n"
+        url = slides_url
     elif type_ in outreach_types:
         bib += f"type = {{ Role:}},\n"
         bib += f"note = {{{type_.lower()}}},\n"
-        bib += f"url = {{{row.get('talk_url', '')}}},\n"
+        url = slides_url or row.get('talk_url', '')
+    if url:
+        bib += f"url = {{{url}}},\n"
     bib += f"}}\n"
     return bib
 
@@ -82,12 +87,55 @@ def bib_award(row):
     bib += f"}}\n"
     return bib
 
+# Supervised students are written as \job entries (see structure.tex), not bib entries
+STUDENT_KINDS = {
+    "bachelor": "Bachelor's Thesis",
+    "master": "Master's Thesis",
+    "phd": "PhD Thesis",
+    "short-stay": "Short stay",
+}
+
+def student_date_key(row):
+    # "Sep 2024" / "September 2024" -> (2024, 9)
+    parts = row.get("begin", "").split()
+    try:
+        month = datetime.strptime(parts[0][:3], "%b").month if len(parts) > 1 else 0
+        return (int(parts[-1]), month)
+    except (ValueError, IndexError):
+        return (0, 0)
+
+def tex_student(row):
+    type_ = row.get("type", "")
+    kind = STUDENT_KINDS.get(type_.lower(), type_)
+    is_main = row.get("role", "").lower() == "supervisor"
+    # \href inside a macro argument needs % and # escaped
+    url = row.get("url", "").replace("%", r"\%").replace("#", r"\#")
+    others = row.get("other_supervisors", "")
+    if others:
+        label = "Co-supervisor" if is_main else "Main supervisor"
+        plural = "s" if (" and " in others or "," in others) else ""
+        others = f"{label}{plural}: {others}"
+    details = []
+    if row.get("institution"):
+        details.append(f"Institution: {row['institution']}")
+    if row.get("title"):
+        label = "Project" if type_.lower() == "short-stay" else "Title"
+        details.append(f"{label}: \\textit{{{row['title']}}}")
+    tex = "\\job\n"
+    tex += f"{{{row.get('begin', '')} -}}{{{row.get('end', '') or 'Present'}}}\n"
+    tex += f"{{{row.get('name', '')} - {kind}}}\n"
+    tex += f"{{{url}}}\n"
+    tex += f"{{{others}}}\n"
+    tex += "{" + r" \\ ".join(details) + "}\n\n"
+    return tex
+
 # Map mode to callback and bib function
 MODES = {
     "conferences": ("talksFeed", bib_conference),
     "outreach": ("outreachFeed", bib_conference),
     "funding": ("fundingFeed", bib_funding),
     "awards": ("awardsFeed", bib_award),
+    "students": ("studentsFeed", tex_student),
 }
 
 if __name__ == "__main__":
@@ -117,6 +165,9 @@ if __name__ == "__main__":
 
     data = extract_json(js_text, callback)
     entries = data.get("entries", [])
+    if mode == "students":
+        # Newest first; bib entries are sorted by biblatex instead
+        entries = sorted(entries, key=student_date_key, reverse=True)
 
     with open(output, "w") as f:
         for row in entries:
